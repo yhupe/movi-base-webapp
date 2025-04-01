@@ -25,6 +25,7 @@ class Movie(db.Model):
     release_year = Column(Integer)
     director = Column(String)
     genre = Column(String)
+    poster_link = Column(String)
 
     def __repr__(self):
         return f"Movie: {self.title} - Genre: {self.genre})"

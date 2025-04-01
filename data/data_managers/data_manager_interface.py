@@ -26,15 +26,15 @@ class DataManagerInterface(ABC):
         pass
 
     @abstractmethod
-    def add_user_movie(self, movie_data):
+    def add_user_movie(self, user_id, title):
         pass
 
     @abstractmethod
-    def delete_user_movie(self, user_id):
+    def delete_user_movie(self, user_id, movie_id):
         pass
 
     @abstractmethod
-    def update_user_movie(self, movie_id, updated_movie_data):
+    def update_user_movie(self, user_id, movie_id, updated_movie_data):
         pass
 
 # ideas: search_movie, filter_movies, random_movie, movie_stats, ...

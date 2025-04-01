@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, render_template
 from data.data_managers.sqlite_data_manager import SQLiteDataManager
 from data.models.data_models import db, Movie
 import os
@@ -25,27 +25,32 @@ def home():
 
 @app.route('/users', methods=['GET'])
 def list_users():
-    users = SQLiteDataManager.get_all_users(data_manager)
-    print(users)
-    return str(users)
+    users = data_manager.get_all_users()
+
+    return render_template('users.html', users=users)
 
 @app.route('/users/<user_id>', methods=['GET'])
-def user_movies():
-    pass
+def user_movies(user_id):
+
+    return str(data_manager.get_user_movies(user_id))
 
 @app.route('/add_user', methods=['GET', 'POST'])
 def add_user():
     pass
 
 @app.route('/users/<user_id>/add_movie', methods=['GET', 'POST'])
-def add_movie():
-    pass
+def add_movie(user_id):
 
-@app.route('/users/<user_id>/update_movie/<movie_id>', methods=['GET', 'PUT'])
+    statement = data_manager.add_user_movie(user_id, 'Inception')
+    db.session.execute(statement)
+    db.session.commit()
+    return "movie added sucessfully!"
+
+@app.route('/users/<user_id>/update_movie/<movie_id>', methods=['GET', 'POST'])
 def update_movie():
     pass
 
-@app.route('/users/<user_id>/delete_movie/<movie_id>', methods=['DELETE'])
+@app.route('/users/<user_id>/delete_movie/<movie_id>', methods=['POST'])
 def delete_movie():
     pass
 
