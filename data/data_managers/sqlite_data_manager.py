@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import insert
+from sqlalchemy import func, insert
 from .data_manager_interface import DataManagerInterface
 from data.models.data_models import User, Movie, user_movies
 import requests
@@ -23,6 +23,14 @@ class SQLiteDataManager(DataManagerInterface):
 
         return users
 
+    def get_user_by_id(self, user_id):
+        user = User.query.get(user_id)
+
+        if user:
+            return user.username
+        else:
+            return None
+
     def add_user(self, user_data):
         pass
 
@@ -39,6 +47,11 @@ class SQLiteDataManager(DataManagerInterface):
         else:
             # if no user is found
             return None
+
+    def get_movie_title(self, movie_id):
+        movie = Movie.query.get(movie_id)
+
+        return movie
 
     def fetch_new_movie(self, title):
         try:
@@ -68,7 +81,6 @@ class SQLiteDataManager(DataManagerInterface):
 
                     self.db.session.add(movie)
                     self.db.session.commit()
-                    print(f"Movie {title} (id: {movie.movie_id}) added successfully.")
 
                     return movie.movie_id
 
@@ -85,15 +97,19 @@ class SQLiteDataManager(DataManagerInterface):
 
     def add_user_movie(self, user_id, title):
         user = User.query.get(user_id)
-        movie = Movie.query.filter_by(title=title).first()
+        movie = Movie.query.filter(func.lower(Movie.title) \
+                           .ilike(func.lower(f"%{title}%"))) \
+                           .first()
 
         if user:
-            if user and movie:
+            if movie:
                 movie_id = movie.movie_id
+                print(f"Movie data for '{movie}' was found in the database.")
 
-            elif user and not movie:
+            elif not movie:
                 movie_id = self.fetch_new_movie(title)
-
+                print(f"Movie data for '{title}' was not found in the database."
+                      f"Movie data is being fetched from OMDb API ... ")
 
 
             statement = insert(user_movies).values(user_id=user_id, movie_id=movie_id, rating=None)
@@ -101,12 +117,23 @@ class SQLiteDataManager(DataManagerInterface):
             return statement
 
         else:
+            print(user_id)
             print("User id not found!")
             return False
 
 
     def delete_user_movie(self, user_id, movie_id):
-        pass
+        user = User.query.get(user_id)
+        movie = Movie.query.get(movie_id)
+
+        if user and movie:
+            if movie in user.movies:
+                user.movies.remove(movie)
+                return True
+            else:
+                return False
+        else:
+            return False
 
     def update_user_movie(self, user_id, movie_id, updated_movie_data):
         pass

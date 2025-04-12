@@ -2,9 +2,81 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Movies - movie-base</title>
+    <link rel="stylesheet" href="../../static/style.css">
 </head>
+
 <body>
+    <div class="top-bar">
+        <span class="current-user-display">Welcome, {% if user %}{{ user }}!{% else %}Nice to see you again... {% endif %}</span>
+        <a href="/" class="action-button">Change Profile</a>
+        <a href="{{  user_id  }}/add_movie" class="action-button">add Movie</a>
+        <a href="/update_movie" class="action-button">update Movie</a>
+    </div>
+
+    <div class="movie-container">
+        {% for movie in movies %}
+            <div class="movie-card">
+                <div class="movie-header">
+                    <span class="genre">{{ movie.genre }}</span>
+                    <form id="delete-movie-form-{{ movie.id }}" action="/users/{{ user_id }}/delete_movie/{{ movie.movie_id }}" method="POST" style="display: inline;">
+                        <button type="submit" class="delete-button">️delete</button>
+                    </form>
+                </div>
+                <div class="movie-title">{{ movie.title }}</div>
+                <div class="movie-director">{{ movie.director }}</div>
+                <div class="movie-image">
+                    <img src="{{ movie.poster_link }}" alt="{{ movie.title }}" style="width: 100%; height: auto;">
+                </div>
+                <div class="movie-details">
+                    <span class="rating">Rating: {{ movie.rating }}</span>
+                    <span class="year">Year: {{ movie.release_year }}</span>
+                </div>
+                <div class="movie-comments">
+                    <span> Personal comments: {{ movie.comments }} </span>
+                </div>
+            </div>
+        {% else %}
+            <h1>You have not added any movies yet ... </h1>
+        {% endfor %}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const deleteForms = document.querySelectorAll('[id^="delete-movie-form-"]');
+
+            deleteForms.forEach(form => {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault(); // Verhindert das sofortige Absenden des Formulars
+
+                    const movieId = this.id.split('-').pop(); // Extrahiert die Movie-ID aus der Formular-ID
+
+                    // Hier kannst du die Meldung anzeigen (z.B. ein Alert oder ein dynamisch erstelltes Element)
+                    alert(`Film mit ID ${movieId} wird gelöscht...`);
+
+                    // Nach einer kurzen Verzögerung (optional) oder sofort die Weiterleitung auslösen
+                    setTimeout(() => {
+                        this.submit(); // Sendet das Formular nun ab
+                    }, 500); // Warte 0.5 Sekunden (anpassbar)
+                });
+            });
+        });
+    </script>
+
+
+    <div class="movie-container">
+        {% for movie in user_movies %}
+            {% endfor %}
+    </div>
+
+    {% if added_message %}
+        <script>
+            alert("Movie added successfully!");
+            // Die Weiterleitung ist bereits erfolgt, das Popup ist nur eine Bestätigung
+            // Du könntest hier optional noch etwas anderes tun, z.B. die Liste der Filme aktualisieren
+        </script>
+    {% endif %}
 
 </body>
 </html>
+

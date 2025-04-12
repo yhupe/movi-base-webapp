@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home - movie-base</title>
+  <link rel="stylesheet" href="../../static/style.css">
+</head>
+
+<body>
+    <h1>WELCOME! Please select your profile below!</h1>
+
+    <div class="">
+        <form action="/users" method="get">
+            <select onchange="this.form.action = '/users/' + this.value;">
+                <option value="">Select a profile...</option>
+                {% for user in users %}
+                    <option value="{{ user.user_id }}">{{ user.username }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="confirm">
+        </form>
+    </div>
+</body>
+</html>

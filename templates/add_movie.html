@@ -3,8 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Add movie - movie-base </title>
+    <link rel="stylesheet" href="../../static/style.css">
 </head>
 <body>
 
+    <div class="">
+        <form id="add-movie-form" action="/users/{{ user_id }}/add_movie" method="POST">
+            <label for="title">Enter movie name: </label>
+            <input type="text" id="title" name="title" required><br><br>
+            <input type="submit" value="Add movie">
+        </form>
+    </div>
+
+    <div id="add-movie-message" style="display: none;">Movie added successfully!</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addMovieForm = document.getElementById('add-movie-form');
+
+            if (addMovieForm) {
+                addMovieForm.addEventListener('submit', function(event) {
+                    // Kein preventDefault() mehr, wir wollen das Standard-Absenden
+                    // Das Backend wird uns weiterleiten
+                });
+            }
+        });
+    </script>
+
 </body>
 </html>
+

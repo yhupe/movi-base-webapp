@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, Integer, String, ForeignKey, Table
+from sqlalchemy import Column, Integer, String, UniqueConstraint, ForeignKey, Table
 
 db = SQLAlchemy()
 
@@ -12,7 +12,8 @@ different personal rating"""
 user_movies = Table('user_movies', db.metadata,
         Column('user_id', Integer, ForeignKey('users.user_id'), primary_key=True),
         Column('movie_id', Integer, ForeignKey('movies.movie_id'), primary_key=True),
-        Column('rating', String)
+        Column('rating', String),
+        UniqueConstraint('user_id', 'movie_id', name='unique_user_movie')
 )
 
 
