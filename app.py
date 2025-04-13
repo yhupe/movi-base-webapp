@@ -52,8 +52,19 @@ def add_user():
         return render_template('add_user.html'), 200
 
     if request.method == "POST":
-        pass
+        new_username = request.form.get('username')
 
+        statement = data_manager.add_user(new_username)
+
+        if statement is not False:
+            db.session.execute(statement)
+            db.session.commit()
+            print(f"New user profile added for '{new_username}'.")
+            return f'{new_username} added successfully xx'
+
+        else:
+            print(f"username '{new_username}' seems to exist already")
+            return f"Profile for '{new_username}' already exists"
 
 @app.route('/users/<int:user_id>/add_movie', methods=['GET', 'POST'])
 def add_movie(user_id):

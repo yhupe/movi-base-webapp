@@ -1,3 +1,5 @@
+from curses.ascii import isalpha
+
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func, insert
 from .data_manager_interface import DataManagerInterface
@@ -31,8 +33,22 @@ class SQLiteDataManager(DataManagerInterface):
         else:
             return None
 
-    def add_user(self, user_data):
-        pass
+    def add_user(self, new_username):
+
+        users = self.db.session.query(User) \
+            .all()
+
+        user_exists = any(user.username == new_username for user in users)
+
+        if not user_exists:
+
+            statement = insert(User).values(username=new_username)
+            return statement
+
+        else:
+            return False
+
+
 
     def delete_user(self, user_id):
         pass

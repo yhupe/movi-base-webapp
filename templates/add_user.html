@@ -7,5 +7,16 @@
 </head>
 <body>
 
+    <h1>Adding a new user profile</h1>
+    <h2>Please enter your new username to create your profile</h2>
+
+    <div class="submit-form">
+        <form id="add-user-form" action="/add_user" method="POST">
+            <label for="username">New username: </label>
+            <input type="text" id="username" name="username" required><br><br>
+            <input type="submit" value="Create profile">
+        </form>
+    </div>
+
 </body>
 </html>
