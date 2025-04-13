@@ -23,7 +23,7 @@ data_manager = SQLiteDataManager(db)
     db.create_all()"""
 
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def home():
     users = data_manager.get_all_users()
 
@@ -31,6 +31,7 @@ def home():
 
 @app.route('/users', methods=['GET'])
 def list_users():
+    # kind of redundant because all existing users are visible in the dropdown menu
     users = data_manager.get_all_users()
 
     return render_template('users.html', users=users)
@@ -47,6 +48,8 @@ def user_movies(user_id):
 
 @app.route('/add_user', methods=['GET', 'POST'])
 def add_user():
+    # change return statements to redirect() -> users/<int: user_id>
+    # pop up message with javascript to inform about successful created profile
 
     if request.method == "GET":
         return render_template('add_user.html'), 200
@@ -85,8 +88,27 @@ def add_movie(user_id):
         return redirect(url_for('user_movies', user_id=user_id, added=True)), 200
 
 @app.route('/users/<int:user_id>/update_movie/<int:movie_id>', methods=['GET', 'POST'])
-def update_movie():
-    pass
+def update_movie(user_id, movie_id):
+    # adding an a-tag (class="action-button" or similar to delete-button)
+    # with href to the update_movie.html form
+    # action must be the url of this endpoint
+    #
+
+    username = data_manager.get_user_by_id(user_id)
+    movie = data_manager.get_movie_title(movie_id)
+
+    if request.method == "GET":
+        # return the update_movie.html file
+        # should be pre-filled with the movie details that are existent already
+        pass
+
+    if request.method == "POST":
+        #title, author, year, poster must be unchangeable
+        # add own personal rating
+        # add personal comments on the movie
+        # pop-up message (javascript) for success message after submitting form
+        # and redirecting back to user_movies endpoint
+        pass
 
 @app.route('/users/<int:user_id>/delete_movie/<int:movie_id>', methods=['POST'])
 def delete_movie(user_id, movie_id):

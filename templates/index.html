@@ -7,18 +7,24 @@
 </head>
 
 <body>
-    <h1>WELCOME! Please select your profile below!</h1>
+    <h1>Welcome to movie-base!</h1>
+    <h2>You can find your existing profile below or easily create a new profile within a few clicks!</h2>
 
-    <div class="">
-        <form action="/users" method="get">
-            <select onchange="this.form.action = '/users/' + this.value;">
-                <option value="">Select a profile...</option>
-                {% for user in users %}
-                    <option value="{{ user.user_id }}">{{ user.username }}</option>
-                {% endfor %}
-            </select>
-            <input type="submit" value="confirm">
-        </form>
+    <div class="group-actions">
+        <div class="">
+            <form action="/users" method="get">
+                <select onchange="this.form.action = '/users/' + this.value;">
+                    <option value="">Select a profile...</option>
+                    {% for user in users %}
+                        <option value="{{ user.user_id }}">{{ user.username }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="confirm">
+            </form>
+        </div>
+
+        <a class="action-button" href="/add_user">+ new user profile</a>
     </div>
+
 </body>
 </html>
