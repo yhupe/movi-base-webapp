@@ -48,7 +48,6 @@ def user_movies(user_id):
 
 @app.route('/add_user', methods=['GET', 'POST'])
 def add_user():
-    # pop up message with javascript to inform about successful created profile
 
     if request.method == "GET":
         return render_template('add_user.html'), 200
@@ -99,19 +98,27 @@ def update_movie(user_id, movie_id):
     # action must be the url of this endpoint
     #
 
-    username = data_manager.get_user_by_id(user_id)
+    user = data_manager.get_user_by_id(user_id)
     movie = data_manager.get_movie_title(movie_id)
+    user_movie_data = None
+
+
 
     if request.method == "GET":
-        # return the update_movie.html file
-        # should be pre-filled with the movie details that are existent already
-        pass
+
+        statement = data_manager.get_personal_details(user_id, movie_id)
+
+        result = db.session.execute(statement).fetchone()
+
+        if result:
+            user_movie_data = {'rating': result.rating} #, 'comment': result.comment
+
+        return render_template('update_movie.html', user=user, movie=movie, user_movie=user_movie_data)
 
     if request.method == "POST":
-        #title, author, year, poster must be unchangeable
         # add own personal rating
         # add personal comments on the movie
-        # pop-up message (javascript) for success message after submitting form
+        # green/ red success or fail message after submitting form
         # and redirecting back to user_movies endpoint
         pass
 

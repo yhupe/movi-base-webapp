@@ -42,12 +42,12 @@
                     })
                     .then(data => {
                         // Erfolgreiche Benutzererstellung
-                        messageContainer.textContent = 'New user profile added successfully!';
+                        messageContainer.textContent = 'New user profile added successfully!<br>You are being redirected to your personal movie page...';
                         messageContainer.style.display = 'block';
                         messageContainer.style.backgroundColor = 'lightgreen';
                         setTimeout(() => {
                             window.location.href = `/users/${data.user_id}`;
-                        }, 3000); // Weiterleitung nach 1.5 Sekunden
+                        }, 3000); // Weiterleitung nach 3 Sekunden
                     })
                     .catch(error => {
                         // Fehler bei der Benutzererstellung (z.B. Benutzername existiert bereits)
@@ -56,14 +56,12 @@
                         messageContainer.style.backgroundColor = 'lightcoral';
                         setTimeout(() => {
                             window.location.href = '/';
-                        }, 3000); // Weiterleitung nach 1.5 Sekunden
+                        }, 3000); // Weiterleitung nach 3 Sekunden
                     });
                 });
             }
         });
     </script>
-
-
 
 </body>
 </html>

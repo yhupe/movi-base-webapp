@@ -1,7 +1,7 @@
 from curses.ascii import isalpha
 
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import func, insert
+from sqlalchemy import func, insert, select, update, insert
 from .data_manager_interface import DataManagerInterface
 from data.models.data_models import User, Movie, user_movies
 import requests
@@ -150,6 +150,14 @@ class SQLiteDataManager(DataManagerInterface):
                 return False
         else:
             return False
+
+    def get_personal_details(self, user_id, movie_id):
+
+        statement = select(user_movies.c.rating).where( #, user_movies.c.comment
+            (user_movies.c.user_id == user_id) & (user_movies.c.movie_id == movie_id)
+        )
+
+        return statement
 
     def update_user_movie(self, user_id, movie_id, updated_movie_data):
         pass
