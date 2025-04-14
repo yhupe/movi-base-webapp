@@ -1,6 +1,6 @@
 from crypt import methods
 
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from sqlalchemy.testing.suite.test_reflection import users
 
 from data.data_managers.sqlite_data_manager import SQLiteDataManager
@@ -48,7 +48,6 @@ def user_movies(user_id):
 
 @app.route('/add_user', methods=['GET', 'POST'])
 def add_user():
-    # change return statements to redirect() -> users/<int: user_id>
     # pop up message with javascript to inform about successful created profile
 
     if request.method == "GET":
@@ -57,17 +56,23 @@ def add_user():
     if request.method == "POST":
         new_username = request.form.get('username')
 
+        if not new_username:
+            return "Please enter a new username", 400
+
         statement = data_manager.add_user(new_username)
 
         if statement is not False:
             db.session.execute(statement)
             db.session.commit()
             print(f"New user profile added for '{new_username}'.")
-            return f'{new_username} added successfully xx'
+            user = User.query.filter_by(username=new_username).first()
+
+            return jsonify({'user_id': user.user_id}), 201
 
         else:
-            print(f"username '{new_username}' seems to exist already")
-            return f"Profile for '{new_username}' already exists"
+            print(f"username '{new_username}' exists already.")
+            return (f"username '{new_username}' exists already. \n"
+                    f"You will be redirected to the account management page."), 409
 
 @app.route('/users/<int:user_id>/add_movie', methods=['GET', 'POST'])
 def add_movie(user_id):

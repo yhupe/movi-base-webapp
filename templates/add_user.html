@@ -15,8 +15,55 @@
             <label for="username">New username: </label>
             <input type="text" id="username" name="username" required><br><br>
             <input type="submit" value="Create profile">
+            <div id="message-container" style="display: none;"></div>
         </form>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addUserForm = document.getElementById('add-user-form');
+            const messageContainer = document.getElementById('message-container');
+
+            if (addUserForm && messageContainer) {
+                addUserForm.addEventListener('submit', function(event) {
+                    event.preventDefault(); // Verhindert das Standard-Absenden
+
+                    const formData = new FormData(addUserForm);
+
+                    fetch('/add_user', {
+                        method: 'POST',
+                        body: formData,
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.text().then(text => { throw new Error(text) });
+                        }
+                        return response.json(); // Angenommen, dein Server gibt bei Erfolg JSON zurück (z.B. {'user_id': ...})
+                    })
+                    .then(data => {
+                        // Erfolgreiche Benutzererstellung
+                        messageContainer.textContent = 'New user profile added successfully!';
+                        messageContainer.style.display = 'block';
+                        messageContainer.style.backgroundColor = 'lightgreen';
+                        setTimeout(() => {
+                            window.location.href = `/users/${data.user_id}`;
+                        }, 3000); // Weiterleitung nach 1.5 Sekunden
+                    })
+                    .catch(error => {
+                        // Fehler bei der Benutzererstellung (z.B. Benutzername existiert bereits)
+                        messageContainer.textContent = error;
+                        messageContainer.style.display = 'block';
+                        messageContainer.style.backgroundColor = 'lightcoral';
+                        setTimeout(() => {
+                            window.location.href = '/';
+                        }, 3000); // Weiterleitung nach 1.5 Sekunden
+                    });
+                });
+            }
+        });
+    </script>
+
+
 
 </body>
 </html>
