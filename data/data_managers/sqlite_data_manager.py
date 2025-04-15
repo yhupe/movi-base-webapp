@@ -16,9 +16,6 @@ class SQLiteDataManager(DataManagerInterface):
     def __init__(self, db: SQLAlchemy):
         self.db = db
 
-    def validate_movie_data(self, movie_data: dict) -> bool:
-        pass
-
     def get_all_users(self):
         users = self.db.session.query(User) \
             .all()
@@ -29,7 +26,7 @@ class SQLiteDataManager(DataManagerInterface):
         user = User.query.get(user_id)
 
         if user:
-            return user.username
+            return user
         else:
             return None
 
@@ -64,7 +61,7 @@ class SQLiteDataManager(DataManagerInterface):
             # if no user is found
             return None
 
-    def get_movie_title(self, movie_id):
+    def get_movie_by_id(self, movie_id):
         movie = Movie.query.get(movie_id)
 
         return movie
@@ -153,11 +150,41 @@ class SQLiteDataManager(DataManagerInterface):
 
     def get_personal_details(self, user_id, movie_id):
 
-        statement = select(user_movies.c.rating).where( #, user_movies.c.comment
+        statement = select(user_movies.c.rating, user_movies.c.comment).where(
             (user_movies.c.user_id == user_id) & (user_movies.c.movie_id == movie_id)
         )
 
         return statement
 
-    def update_user_movie(self, user_id, movie_id, updated_movie_data):
-        pass
+    def update_user_movie(self, user_id, movie_id, update_values):
+
+        statement = ""
+
+        if user_id and movie_id:
+
+            if 'rating' in update_values or 'comment' in update_values:
+                statement = update(user_movies).where(
+            (user_movies.c.user_id == user_id) & (user_movies.c.movie_id == movie_id)
+            ).values(**update_values)
+
+        if statement == "":
+            return None
+
+        else:
+            return statement
+
+
+    def get_movie_rating_and_comment(self, user_id):
+
+        if user_id:
+
+            statement = select(
+        user_movies.c.movie_id,
+        user_movies.c.rating,
+        user_movies.c.comment
+    ).where(user_movies.c.user_id == user_id)
+
+            return statement
+
+        else:
+            return None

@@ -8,7 +8,7 @@
 
 <body>
     <div class="top-bar">
-        <span class="current-user-display">Welcome, {% if user %}{{ user }}!{% else %}Nice to see you again... {% endif %}</span>
+        <span class="current-user-display">Welcome, {% if user %}{{ user.username }}!{% else %}Nice to see you again... {% endif %}</span>
         <a href="/" class="action-button">Change Profile</a>
         <a href="{{  user_id  }}/add_movie" class="action-button">add Movie</a>
         <a href="/update_movie" class="action-button">update Movie</a>
@@ -28,13 +28,15 @@
                 <div class="movie-image">
                     <img src="{{ movie.poster_link }}" alt="{{ movie.title }}" style="width: 100%; height: auto;">
                 </div>
+
                 <div class="movie-details">
                     <span class="rating">Rating: {{ movie.rating }}</span>
                     <span class="year">Year: {{ movie.release_year }}</span>
                 </div>
                 <div class="movie-comments">
-                    <span> Personal comments: {{ movie.comments }} </span>
+                    <span> Personal comments: {{ movie.comment }} </span>
                 </div>
+
             </div>
         {% else %}
             <h1>You have not added any movies yet ... </h1>

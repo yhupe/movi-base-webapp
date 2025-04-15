@@ -10,7 +10,7 @@
 <h1>Movie updates</h1>
 
     <div class="submit-form">
-        <form id="update-movie-form" action="/users/{{ user_id }}/update_movie/{{ movie.movie_id }}" method="POST">
+        <form id="update-movie-form" action="/users/{{ user.user_id }}/update_movie/{{ movie.movie_id }}" method="POST">
             <h2>Edit movie details</h2>
 
             <div>
@@ -38,10 +38,10 @@
                 <input type="number" id="rating" name="rating" min="1" max="10" value="{{ user_movie.rating if user_movie }}">
             </div>
 
-            <!--<div>
+            <div>
                 <label for="comment">Personal comment:</label>
                 <textarea id="comment" name="comment">{{ user_movie.comment if user_movie }}</textarea>
-            </div>-->
+            </div>
 
             <button type="submit">Save changes</button>
         </form>

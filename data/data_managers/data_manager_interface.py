@@ -6,10 +6,6 @@ class DataManagerInterface(ABC):
     to create a uniform interface."""
 
     @abstractmethod
-    def validate_movie_data(self, movie_data: dict) -> bool:
-        pass
-
-    @abstractmethod
     def get_all_users(self):
         pass
 
@@ -34,7 +30,7 @@ class DataManagerInterface(ABC):
         pass
 
     @abstractmethod
-    def update_user_movie(self, user_id, movie_id, updated_movie_data):
+    def update_user_movie(self, user_id, movie_id, update_values):
         pass
 
 # ideas: search_movie, filter_movies, random_movie, movie_stats, ...
