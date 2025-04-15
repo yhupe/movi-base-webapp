@@ -11,7 +11,6 @@
         <span class="current-user-display">Welcome, {% if user %}{{ user.username }}!{% else %}Nice to see you again... {% endif %}</span>
         <a href="/" class="action-button">Change Profile</a>
         <a href="{{  user_id  }}/add_movie" class="action-button">add Movie</a>
-        <a href="/update_movie" class="action-button">update Movie</a>
     </div>
 
     <div class="movie-container">
@@ -19,9 +18,12 @@
             <div class="movie-card">
                 <div class="movie-header">
                     <span class="genre">{{ movie.genre }}</span>
-                    <form id="delete-movie-form-{{ movie.id }}" action="/users/{{ user_id }}/delete_movie/{{ movie.movie_id }}" method="POST" style="display: inline;">
-                        <button type="submit" class="delete-button">️delete</button>
-                    </form>
+                    <div class="update-delete-buttons">
+                        <form id="delete-movie-form-{{ movie.id }}" action="/users/{{ user_id }}/delete_movie/{{ movie.movie_id }}" method="POST" style="display: inline;">
+                            <button type="submit" class="delete-button">️delete</button>
+                        </form>
+                        <a href="{{  user_id  }}/update_movie/{{  movie.movie_id  }}" class="update-button">update</a>
+                    </div>
                 </div>
                 <div class="movie-title">{{ movie.title }}</div>
                 <div class="movie-director">{{ movie.director }}</div>
