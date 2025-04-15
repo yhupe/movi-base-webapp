@@ -20,9 +20,9 @@
                     <span class="genre">{{ movie.genre }}</span>
                     <div class="update-delete-buttons">
                         <form id="delete-movie-form-{{ movie.id }}" action="/users/{{ user_id }}/delete_movie/{{ movie.movie_id }}" method="POST" style="display: inline;">
-                            <button type="submit" class="delete-button">️delete</button>
+                            <button type="submit" title="Delete this movie" class="delete-button">️🚮️</button>
                         </form>
-                        <a href="{{  user_id  }}/update_movie/{{  movie.movie_id  }}" class="update-button">update</a>
+                        <a href="{{  user_id  }}/update_movie/{{  movie.movie_id  }}" title="Update this movie" class="update-button">🔄</a>
                     </div>
                 </div>
                 <div class="movie-title">{{ movie.title }}</div>

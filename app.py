@@ -106,16 +106,10 @@ def add_movie(user_id):
 
 @app.route('/users/<int:user_id>/update_movie/<int:movie_id>', methods=['GET', 'POST'])
 def update_movie(user_id, movie_id):
-    # adding an a-tag (class="action-button" or similar to delete-button)
-    # with href to the update_movie.html form
-    # action must be the url of this endpoint
-    #
 
     user = data_manager.get_user_by_id(user_id)
     movie = data_manager.get_movie_by_id(movie_id)
     user_movie_data = None
-
-
 
     if request.method == "GET":
 
@@ -129,14 +123,11 @@ def update_movie(user_id, movie_id):
         return render_template('update_movie.html', user=user, movie=movie, user_movie=user_movie_data)
 
     if request.method == "POST":
-        # add own personal rating
-        # add personal comments on the movie
         # green/ red success or fail message after submitting form
         # and redirecting back to user_movies endpoint
 
         personal_rating = request.form.get('rating', None)
         personal_comment = request.form.get('comment', None)
-
 
         update_values = {}
 
@@ -150,7 +141,6 @@ def update_movie(user_id, movie_id):
             if statement is not None:
                 db.session.execute(statement)
                 db.session.commit()
-
 
             success_message = None
 

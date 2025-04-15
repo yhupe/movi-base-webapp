@@ -45,9 +45,9 @@ h1, h2 {
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 8px 12px;
+    padding: 2px 5px;
     cursor: pointer;
-    font-size: 0.8em;
+    font-size: 1.4em;
     transition: background-color 0.3s ease;
 }
 
@@ -81,11 +81,11 @@ h1, h2 {
     color: #000;
     border: none;
     border-radius: 5px;
-    padding: 8px 12px;
+    padding: 2px 5px;
     margin-top: 5px;
     cursor: pointer;
     text-decoration: none;
-    font-size: 0.8em;
+    font-size: 1.4em;
     transition: background-color 0.3s ease;
 }
 
